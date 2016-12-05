@@ -7,7 +7,12 @@ use JSON::Name;
 
 class Tinky::JSON {
 
-
+    class X::NoState is X::Fail {
+        has Str $.name is required;
+        method message() returns Str {
+            "There is no state '{ $!name }' in this workflow";
+        }
+    }
 
     class State is Tinky::State does JSON::Class {
     }
@@ -39,8 +44,32 @@ class Tinky::JSON {
         has State $.initial-state is unmarshalled-by(&deserialise-state);
         has Tinky::JSON::State @.states is unmarshalled-by(&deserialise-states);
         has Tinky::JSON::Transition @.transitions;
+
+        method state(Str:D $state) returns State {
+            self.states.first({ $_ ~~ $state }) // X::NoState.new(name => $state).throw;
+        }
+
+        multi method enter-supply(Str:D $state) returns Supply {
+            self.state($state).?enter-supply();
+        }
+
+        multi method leave-supply(Str:D $state) returns Supply {
+            self.state($state).?leave-supply();
+        }
+
+        multi method transitions-for-state(Str:D $state) {
+            self.transitions-for-state(self.state($state));
+        }
+
+        multi method find-transition(Str:D $from, Str:D $to) {
+            self.find-transition(self.state($from), self.state($to));
+        }
     }
 
 
+}
+
+sub EXPORT() {
+    { 'Tinky::Object' => Tinky::Object }
 }
 # vim: expandtab shiftwidth=4 ft=perl6
