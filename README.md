@@ -13,7 +13,7 @@ use Tinky::JSON;
 
 ## Description
 
-This allows you to define a (https://github.com/jonathanstowe/Tinky)[Tinky] workflow from JSON data.
+This allows you to define a [Tinky](https://github.com/jonathanstowe/Tinky) workflow from JSON data.
 
 
 ## Installation
