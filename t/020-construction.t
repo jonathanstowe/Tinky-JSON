@@ -8,7 +8,6 @@ use Tinky::JSON;
 
 my $json = $*PROGRAM.parent.child('data/ticket.json').slurp;
 
-say $json;
 
 my $workflow;
 
