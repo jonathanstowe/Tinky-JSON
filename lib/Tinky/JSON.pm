@@ -66,10 +66,11 @@ class Tinky::JSON {
         }
     }
 
+    role Object does Tinky::Object {
+        has $.foodle;
+    }
+
 
 }
 
-sub EXPORT() {
-    { 'Tinky::Object' => Tinky::Object }
-}
 # vim: expandtab shiftwidth=4 ft=perl6
