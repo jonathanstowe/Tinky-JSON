@@ -7,7 +7,6 @@ use Test;
 use Tinky::JSON;
 
 my $json = $*PROGRAM.parent.child('data/ticket.json').slurp;
-
 my $workflow = Tinky::JSON::Workflow.from-json($json);
 
 for $workflow.states -> $state {
