@@ -5,6 +5,26 @@ use JSON::Unmarshal:ver(v0.07);
 use JSON::Class;
 use JSON::Name;
 
+=begin pod
+
+=head1 NAME
+
+Tinky::JSON - create a L<Tinky|https://github.com/jonathanstowe/Tinky> workflow from JSON
+
+=head1 SYNOPSIS
+
+=begin code
+
+=end code
+
+=head1 DESCRIPTION
+
+
+
+
+
+=end pod
+
 class Tinky::JSON {
 
     class X::NoState is X::Fail {
@@ -69,8 +89,6 @@ class Tinky::JSON {
     role Object does Tinky::Object {
         has $.foodle;
     }
-
-
 }
 
 # vim: expandtab shiftwidth=4 ft=perl6
