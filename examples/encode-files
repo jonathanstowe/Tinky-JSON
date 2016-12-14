@@ -75,35 +75,41 @@ multi sub MAIN($dir, Str :$out-dir = '/tmp/flac') {
             }
         }
         whenever $workflow.enter-supply('ready') -> $pf {
-            CATCH {
-                default {
+            my $copy = Proc::Async.new('/usr/bin/cp', $pf.path, $pf.new-path, :r);
+            whenever $copy.stderr -> $error {
+                $pf.errors.append: $error.chomp;
+            }
+            whenever $copy.start -> $proc {
+                if $proc.exitcode {
                     $pf.fail;
                 }
-            }
-            my $copy = Proc::Async.new('/usr/bin/cp', $pf.path, $pf.new-path, :err);
-            whenever $copy.start {
-                $pf.copied;
+                else {
+                    $pf.copied;
+                }
             }
         }
         whenever $workflow.enter-supply('copied') -> $pf {
-            CATCH {
-                default {
-                    $pf.fail;
-                }
-            }
-            my $encode = Proc::Async.new('/usr/bin/flac', $pf.new-path);
+            my $encode = Proc::Async.new('/usr/bin/flac', $pf.new-path, :r);
             whenever $encode.stdout {
                    # ignored
             }
             whenever $encode.stderr -> $error {
-                $pf.errors.append: $error;
+                $pf.errors.append: $error.chomp;
             }
-            whenever $encode.start {
-                $pf.done;
+            whenever $encode.start -> $proc {
+                if $proc.exitcode {
+                    $pf.fail;
+                }
+                else {
+                    $pf.done;
+                }
             }
         }
         whenever $workflow.enter-supply('done') -> $pf {
             say "File '{ $pf.path }' has been processed to '{ $pf.flac-file }'";
+        }
+        whenever $workflow.enter-supply('failed') -> $pf {
+            say "Processing of file '{ $pf.path }' failed with '{ $pf.errors }'";
         }
         whenever $workflow.transition-supply -> ($trans, $pf ) {
             $*ERR.say("File '{ $pf.path }' went from '{ $trans.from.name }' to '{ $trans.to.name }'");
