@@ -30,9 +30,39 @@ You will of course need the 'flac' program for this to work.
 
 =end pod
 
+use Manifesto;
+
+role EmptySupply {
+
+    has Manifesto $!manifesto;
+
+    method empty-supply() returns Supply {
+        if not $!manifesto.defined {
+            $!manifesto = my $manifesto = Manifesto.new;
+            self.enter-supply.tap( -> $o {
+                my $p = Promise.new;
+                $manifesto.add-promise($p);
+                my $leave = self.leave-supply.tap( -> $o {
+                    $p.keep: $o;
+                    $leave.close;
+                });
+            });
+        }
+        $!manifesto.empty;
+    }
+}
+
+role Encoder::Workflow {
+    method empty-supply(Str $state) {
+        my $s = self.state($state);
+        $s does EmptySupply;
+        $s.empty-supply;
+    }
+}
+
 my $json = $*PROGRAM.parent.child('encoder.json').slurp;
 
-my $workflow = Tinky::JSON::Workflow.from-json($json);
+my $workflow = Tinky::JSON::Workflow.from-json($json) but Encoder::Workflow;
 
 class ProcessFile does Tinky::Object {
     has Str $.path      is required;
@@ -75,7 +105,7 @@ multi sub MAIN($dir, Str :$out-dir = '/tmp/flac') {
             }
         }
         whenever $workflow.enter-supply('ready') -> $pf {
-            my $copy = Proc::Async.new('/usr/bin/cp', $pf.path, $pf.new-path, :r);
+            my $copy = Proc::Async.new('/bin/cp', $pf.path, $pf.new-path, :r);
             whenever $copy.stderr -> $error {
                 $pf.errors.append: $error.chomp;
             }
@@ -87,6 +117,9 @@ multi sub MAIN($dir, Str :$out-dir = '/tmp/flac') {
                     $pf.copied;
                 }
             }
+        }
+        whenever $workflow.empty-supply('ready') {
+            say "No more at state ready";
         }
         whenever $workflow.enter-supply('copied') -> $pf {
             my $encode = Proc::Async.new('/usr/bin/flac', $pf.new-path, :r);
