@@ -2,6 +2,8 @@
 
 Tinky Machines defined in JSON
 
+[![Build Status](https://travis-ci.org/jonathanstowe/Tinky-JSON.svg?branch=master)](https://travis-ci.org/jonathanstowe/Tinky-JSON)
+
 ## Synopsis
 
 Given a JSON file like:
