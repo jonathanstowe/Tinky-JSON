@@ -28,6 +28,9 @@
       "JSON"
    ],
    "depends" : [
-       "Tinky"
+       "Tinky",
+       "JSON::Name",
+       "JSON::Unmarshal",
+       "JSON::Class"
    ]
 }
