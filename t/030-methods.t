@@ -18,8 +18,9 @@ for $workflow.states -> $state {
 }
 
 for $workflow.transitions -> $transition {
+    ok $workflow.transition($transition.name).elems > 0, "got at least one transtion with the name '{ $transition.name }'";
     ok $workflow.find-transition($transition.from.name, $transition.to.name) === $workflow.find-transition($transition.from, $transition.to), "find-transition { $transition.name }";
-
+    ok $workflow.transitions-for-state($transition.from.name).elems, "transitions for state on the from state must return at least one";
 }
 
 done-testing;
