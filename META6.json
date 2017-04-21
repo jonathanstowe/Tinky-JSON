@@ -1,7 +1,7 @@
 {
    "description" : "Describe Tinky Workflows in JSON",
    "name" : "Tinky::JSON",
-   "license" : "Artistic",
+   "license" : "Artistic-2.0",
    "perl" : "6.c",
    "build-depends" : [],
    "test-depends" : [
