@@ -246,7 +246,7 @@ an C<Tinky::JSON::X::NoState> exception will be thrown.
 
 class Tinky::JSON {
 
-    class Tinky::JSON::X::NoState is X::Fail {
+    class Tinky::JSON::X::NoState is Tinky::X::Fail {
         has Str $.name is required;
         method message() returns Str {
             "There is no state '{ $!name }' in this workflow";
