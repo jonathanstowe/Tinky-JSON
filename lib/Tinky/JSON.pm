@@ -248,7 +248,7 @@ class Tinky::JSON {
 
     class Tinky::JSON::X::NoState is Tinky::X::Fail {
         has Str $.name is required;
-        method message() returns Str {
+        method message( --> Str ) {
             "There is no state '{ $!name }' in this workflow";
         }
     }
@@ -258,7 +258,7 @@ class Tinky::JSON {
 
 
     state %states;
-    sub deserialise-state(Str $name) {
+    sub deserialise-state(Str $name --> State ) {
         %states{$name} //= Tinky::JSON::State.new(:$name);
     }
 
@@ -275,7 +275,7 @@ class Tinky::JSON {
 
     class Workflow is Tinky::Workflow does JSON::Class {
 
-        method from-json(|c) {
+        method from-json(|c --> Workflow ) {
             %states = ();
             self.JSON::Class::from-json(|c);
         }
@@ -284,7 +284,7 @@ class Tinky::JSON {
         has Tinky::JSON::State @.states is unmarshalled-by(&deserialise-states);
         has Tinky::JSON::Transition @.transitions;
 
-        method state(Str:D $state) returns State {
+        method state(Str:D $state --> State ) {
             self.states.first({ $_ ~~ $state }) // Tinky::JSON::X::NoState.new(name => $state).throw;
         }
 
@@ -292,11 +292,11 @@ class Tinky::JSON {
             self.transitions.grep: $trans
         }
 
-        multi method enter-supply(Str:D $state) returns Supply {
+        multi method enter-supply(Str:D $state --> Supply ) {
             self.state($state).?enter-supply();
         }
 
-        multi method leave-supply(Str:D $state) returns Supply {
+        multi method leave-supply(Str:D $state --> Supply ) {
             self.state($state).?leave-supply();
         }
 
