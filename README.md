@@ -173,4 +173,4 @@ Please send any reports, suggestions or patches to https://github.com/jonathanst
 The is free software.  The terms are described in the [LICENCE](LICENCE)
 file in the distribution.
 
-© Jonathan Stowe, 2016, 2017
+© Jonathan Stowe, 2016 - 2019

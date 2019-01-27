@@ -1,5 +1,9 @@
 {
   "name": "Tinky::JSON",
+  "version": "0.0.5",
+  "auth": "github:jonathanstowe",
+  "api": "1.0",
+  "description": "Describe Tinky Workflows in JSON",
   "source-url": "git://github.com/jonathanstowe/Tinky-JSON.git",
   "support": {
     "email": "jns+gh@gellyfish.co.uk",
@@ -7,13 +11,8 @@
     "bugtracker": "https://github.com/jonathanstowe/Tinky-JSON/issues"
   },
   "perl": "6.*",
-  "resources": [
-    
-  ],
-  "build-depends": [
-    
-  ],
-  "auth": "github:jonathanstowe",
+  "resources": [ ],
+  "build-depends": [ ],
   "depends": [
     "Tinky",
     "JSON::Name",
@@ -33,10 +32,8 @@
   "provides": {
     "Tinky::JSON": "lib/Tinky/JSON.pm"
   },
-  "version": "0.0.4",
   "authors": [
     "Jonathan Stowe <jns+git@gellyfish.co.uk>"
   ],
-  "description": "Describe Tinky Workflows in JSON",
-  "meta6": "0"
+  "meta-version": "0"
 }
