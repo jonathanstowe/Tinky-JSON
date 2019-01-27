@@ -46,7 +46,20 @@ class ProcessFile does Tinky::Object {
         $!flac-file;
     }
 
-
+    method run-then(@args, Tinky::State $ok, Tinky::State $fail) {
+        my $proc = Proc::Async.new(|@args, :r);
+        $proc.stderr.tap( -> $error {
+            self.errors.append: $error.chomp;
+        });
+        $proc.start.then( -> $proc {
+            if $proc.result.exitcode {
+                self.state = $fail;
+            }
+            else {
+                self.state = $ok;
+            }
+        });
+    }
 }
 
 
@@ -81,32 +94,10 @@ multi sub MAIN($dir, Str :$out-dir = '/tmp/flac') {
             }
         }
         whenever $workflow.enter-supply('ready') -> $pf {
-            my $copy = Proc::Async.new($cp, $pf.path, $pf.new-path, :r);
-            whenever $copy.stderr -> $error {
-                $pf.errors.append: $error.chomp;
-            }
-            whenever $copy.start -> $proc {
-                if $proc.exitcode {
-                    $pf.fail;
-                }
-                else {
-                    $pf.copied;
-                }
-            }
+            $pf.run-then(($cp, $pf.path, $pf.new-path), $workflow.state('copied'), $workflow.state('failed'));
         }
         whenever $workflow.enter-supply('copied') -> $pf {
-            my $encode = Proc::Async.new($flac,'-s',$pf.new-path, :r);
-            whenever $encode.stderr -> $error {
-                $pf.errors.append: $error.chomp;
-            }
-            whenever $encode.start -> $proc {
-                if $proc.exitcode {
-                    $pf.fail;
-                }
-                else {
-                    $pf.done;
-                }
-            }
+            $pf.run-then(($flac, '-s', $pf.new-path), $workflow.state('done'), $workflow.state('failed'));
         }
         whenever $workflow.enter-supply('done') -> $pf {
             say "File '{ $pf.path }' has been processed to '{ $pf.flac-file }'";
