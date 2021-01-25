@@ -1,4 +1,4 @@
-#!perl6
+#!raku
 
 use Tinky;
 use Tinky::JSON;
@@ -36,4 +36,4 @@ $ticket-a.state = $workflow.state('stalled');
 
 $ticket-a.reject;
 
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

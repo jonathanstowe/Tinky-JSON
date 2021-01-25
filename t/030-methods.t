@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 
@@ -26,4 +26,4 @@ for $workflow.transitions -> $transition {
 throws-like { $workflow.transitions-for-state('Xtotally-bogus-stateX') }, Tinky::JSON::X::NoState, "got expected exception for bogus state";
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 
@@ -30,4 +30,4 @@ my $workflow2 = Tinky::JSON::Workflow.from-json($json) ;
 ok $workflow2.states.map(*.WHICH).none ⊆ $workflow.states.map(*.WHICH).any, "differ";
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

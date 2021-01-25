@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use Tinky;
 use Tinky::JSON;
@@ -111,4 +111,4 @@ multi sub MAIN($dir, Str :$out-dir = '/tmp/flac') {
     }
 }
 
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku
