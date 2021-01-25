@@ -2,7 +2,7 @@
 
 Tinky Machines defined in JSON
 
-[![Build Status](https://travis-ci.org/jonathanstowe/Tinky-JSON.svg?branch=master)](https://travis-ci.org/jonathanstowe/Tinky-JSON)
+![Build Status](https://github.com/jonathanstowe/Tinky-JSON/workflows/CI/badge.svg)
 
 ## Synopsis
 
