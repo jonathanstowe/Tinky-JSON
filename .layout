@@ -76,7 +76,7 @@
           "name": "Tinky",
           "children": [
             {
-              "name": "JSON.pm",
+              "name": "JSON.rakumod",
               "type": "file"
             }
           ]

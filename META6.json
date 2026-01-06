@@ -9,10 +9,10 @@
     "source": "git://github.com/jonathanstowe/Tinky-JSON.git",
     "bugtracker": "https://github.com/jonathanstowe/Tinky-JSON/issues"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "raku": "6.*",
   "provides": {
-    "Tinky::JSON": "lib/Tinky/JSON.pm"
+    "Tinky::JSON": "lib/Tinky/JSON.rakumod"
   },
   "name": "Tinky::JSON",
   "depends": [
